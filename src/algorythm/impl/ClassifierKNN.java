@@ -3,19 +3,19 @@ package algorythm.impl;
 import java.util.Enumeration;
 import java.util.List;
 
-import algorythm.Classificator;
+import algorythm.Classifier;
 import exceptions.DataValidatorNotSetException;
 import helper.DataValidator;
 import weka.core.Attribute;
 import weka.core.Instances;
 
-public class ClassificatorKNN implements Classificator {
+public class ClassifierKNN implements Classifier {
 
 	private Instances learnedData;
 	private DataValidator dataValidator;
 	private int k;
 	
-	public ClassificatorKNN(int k) {
+	public ClassifierKNN(int k) {
 		this.k = k;
 	}
 	
