@@ -1,6 +1,7 @@
 package algorythm.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -21,10 +22,19 @@ public class ClassifierKNN implements Classifier {
 	private Instances learnedData;
 	private DataValidator dataValidator;
 	private int k;
+
+	/* Class construction */
 	
 	public ClassifierKNN(int k) {
 		this.k = k;
 	}
+	
+	@Override
+	public void setDataValidator(DataValidator dataValidtor) {
+		this.dataValidator = dataValidtor;
+	}
+	
+	/* Algorithms */
 	
 	@Override
 	public void learn(Instances learnData) {
@@ -42,6 +52,7 @@ public class ClassifierKNN implements Classifier {
 		
 		if(!dataValidator.checkDataCompability(learnedData,dataToPredict)) throw new DataNotCompatibleException();
 		
+		//TODO: check if learn data Size is >= than k ?
 		
 		@SuppressWarnings("unchecked")
 		Enumeration<Instance> enumerateDataToPredict = dataToPredict.enumerateInstances();
@@ -50,67 +61,30 @@ public class ClassifierKNN implements Classifier {
 			
 			Instance itemToPredict = enumerateDataToPredict.nextElement();
 			
-			Map<Instance, Double> kClosestWithDistanes = findKClosestNeighboursDistances(itemToPredict);
-			
-			String bestMatchClassValue = determineBestMatchClassValue(kClosestWithDistanes);
+			itemToPredict.setValue(predictData.attribute("class"), predict(itemToPredict));
 			
 		}
-		
-		
 		
 		return dataToPredict;
 	}
 	
-	public String determineBestMatchClassValue(Map<Instance, Double> kClosestWithDistances) {
+	public String predict(Instance itemToPredict) throws DataValidatorNotSetException, DataNotLearnedException, DataNotCompatibleException {
+
+		String predictedClass = null;
 		
-		Map<String, Double> classScores = new HashMap<String, Double>();
+		Map<Instance, Double> closestNeighbors = findClosestNeighbors(itemToPredict);
 		
-		double worstScore = 0;
+		predictedClass = findBestClass(closestNeighbors);
 		
-		// determine the worst (biggest) distance
-		for(Instance instance : kClosestWithDistances.keySet()){
-			if(worstScore < kClosestWithDistances.get(instance).doubleValue()) worstScore = kClosestWithDistances.get(instance).doubleValue();
-		}
+		return predictedClass;
+	}
+	
+	public String findBestClass(Map<Instance, Double> closestNeighbors) {
 		
-		// to make the farthest one count at least a little
-		worstScore += worstScore/10;
 		
-		// fill map with classes and their scores
-		for(Instance instance : kClosestWithDistances.keySet()){
-			
-			@SuppressWarnings("unchecked")
-			Enumeration<Attribute> enumerateAttributes = instance.enumerateAttributes();
-			
-			while(enumerateAttributes.hasMoreElements()){
-				Attribute attribute = enumerateAttributes.nextElement();
+		double biggestDistance = findBiggestDistance(closestNeighbors.values());
 				
-				if(attribute.name().equalsIgnoreCase("class")){
-					
-					String currentInstanceClass = instance.stringValue(attribute);
-					
-					boolean foundMatch = false;
-					
-					double relativeScore = worstScore - kClosestWithDistances.get(instance).doubleValue();
-					
-					for(String classes : classScores.keySet()){
-						if(classes.equalsIgnoreCase(currentInstanceClass)){
-							foundMatch = true;
-							
-							classScores.put(classes, classScores.get(classes) + relativeScore);
-							
-							break;
-						}
-					}
-					
-					if(!foundMatch){
-						classScores.put(currentInstanceClass, relativeScore);
-					}
-					
-				}
-				
-			}
-			
-		}
+		Map<String, Double> classScores = createClassScoresMap(closestNeighbors, biggestDistance);
 		
 		String bestClassName = "notfound";
 		double bestScore = 0;
@@ -135,9 +109,82 @@ public class ClassifierKNN implements Classifier {
 		return bestClassName;
 	}
 
-	public Map<Instance, Double> findKClosestNeighboursDistances(Instance itemToPredict) throws DataNotLearnedException {
+	/* Helper algorithms */
+	
+	/***
+	 * 
+	 * @param closestNeighbors Map that associates closest neighbors with their distances
+	 * @param biggestDistance distance from farthest neighbor
+	 * @return Map that associates possible class values with its scores
+	 */
+	private Map<String, Double> createClassScoresMap(Map<Instance, Double> closestNeighbors,
+			double biggestDistance) {
 		
-		Map<Instance, Double> kClosestNeighboursDistances = new HashMap<Instance, Double>();
+		Map<String, Double> classScores = new HashMap<String, Double>();
+		
+		// fill map with classes and their scores
+		for(Instance instance : closestNeighbors.keySet()){
+			
+			@SuppressWarnings("unchecked")
+			Enumeration<Attribute> enumerateAttributes = instance.enumerateAttributes();
+			
+			while(enumerateAttributes.hasMoreElements()){
+				Attribute attribute = enumerateAttributes.nextElement();
+				
+				if(attribute.name().equalsIgnoreCase("class")){
+					
+					String currentInstanceClass = instance.stringValue(attribute);
+					
+					boolean foundMatch = false;
+					
+					double relativeScore = biggestDistance - closestNeighbors.get(instance).doubleValue();
+					
+					for(String classes : classScores.keySet()){
+						if(classes.equalsIgnoreCase(currentInstanceClass)){
+							foundMatch = true;
+							
+							classScores.put(classes, classScores.get(classes) + relativeScore);
+							
+							break;
+						}
+					}
+					
+					if(!foundMatch){
+						classScores.put(currentInstanceClass, relativeScore);
+					}
+				}
+			}
+		}
+		
+		return classScores;
+	}
+	
+	/***
+	 * @param values closest neighbors distances
+	 * @return the biggest distance + 0.1 of it
+	 */
+	private double findBiggestDistance(Collection<Double> values) {
+		double biggestDistance = 0;
+		
+		// determine the worst (biggest) distance
+		for(Double value : values){
+			if(biggestDistance < value) biggestDistance = value;
+		}
+		
+		// to make the farthest one count at least a little
+		biggestDistance += biggestDistance/10;
+			
+		return biggestDistance;
+	}
+	
+	/***
+	 * @param itemToPredict examined item
+	 * @return map that consists of k- closest neighbors associated with their distances to examined item
+	 * @throws DataNotLearnedException
+	 */
+	public Map<Instance, Double> findClosestNeighbors(Instance itemToPredict) throws DataNotLearnedException {
+		
+		Map<Instance, Double> closestNeighbors = new HashMap<Instance, Double>();
 		
 		if(learnedData == null) throw new DataNotLearnedException();
 		
@@ -148,19 +195,13 @@ public class ClassifierKNN implements Classifier {
 			
 			Instance itemLearned = enumerateLearnedData.nextElement();
 			
-			// comparison
+			// TODO comparison
 			
 		}
 		
-		return kClosestNeighboursDistances;
+		return closestNeighbors;
 	}
 
-	@Override
-	public void setDataValidator(DataValidator dataValidtor) {
-		this.dataValidator = dataValidtor;
-	}
-	
-	
 	
 
 }

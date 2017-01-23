@@ -38,7 +38,7 @@ public class ClassifierKNNTests {
 			fakeKClosestWithDistances.put(instances.get(4), Double.valueOf(5));
 			
 			
-			String foundClass = classifier.determineBestMatchClassValue(fakeKClosestWithDistances);
+			String foundClass = classifier.findBestClass(fakeKClosestWithDistances);
 			
 			assertTrue(foundClass.equalsIgnoreCase("0"));
 			
@@ -67,7 +67,7 @@ public class ClassifierKNNTests {
 			fakeKClosestWithDistances.put(instances.get(4), Double.valueOf(3));
 			
 			
-			String foundClass = classifier.determineBestMatchClassValue(fakeKClosestWithDistances);
+			String foundClass = classifier.findBestClass(fakeKClosestWithDistances);
 			
 			assertTrue(foundClass.equalsIgnoreCase("1"));
 			
@@ -96,7 +96,7 @@ public class ClassifierKNNTests {
 			fakeKClosestWithDistances.put(instances.get(4), Double.valueOf(6));
 			
 			
-			String foundClass = classifier.determineBestMatchClassValue(fakeKClosestWithDistances);
+			String foundClass = classifier.findBestClass(fakeKClosestWithDistances);
 			
 			assertTrue(foundClass.equalsIgnoreCase("0"));
 			
