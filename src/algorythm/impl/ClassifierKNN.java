@@ -38,7 +38,7 @@ public class ClassifierKNN implements Classifier {
 	
 	@Override
 	public void learn(Instances learnData) {
-		this.learnedData = learnData;
+		this.learnedData = new Instances(learnData);
 	}
 
 	@Override
