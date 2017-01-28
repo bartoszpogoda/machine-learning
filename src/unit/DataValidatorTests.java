@@ -36,5 +36,27 @@ public class DataValidatorTests {
 			fail();
 		}
 	}
+	
+	@Test
+	public void test2() {
+		try {
+			BufferedReader bufferedReader = new BufferedReader(new FileReader("testdata/noclasstest.arff"));
+			Instances instances = new Instances(bufferedReader);
+			
+			Instances testData = instances.testCV(4, 1);
+			Instances learnData = instances.trainCV(4, 1);
+			
+			DataValidator dataValidator = new DataValidatorImpl();
+			
+			
+			if(dataValidator.checkDataCompability(testData,testData)) fail();
+			if(dataValidator.checkDataCompability(learnData,learnData)) fail();
+			if(dataValidator.checkDataCompability(testData,learnData)) fail();
+			
+			
+		} catch (IOException e) {
+			fail();
+		}
+	}
 
 }

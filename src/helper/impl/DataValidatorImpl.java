@@ -13,7 +13,7 @@ public class DataValidatorImpl implements DataValidator {
 		Enumeration<Attribute> a = aInstances.enumerateAttributes();
 		Enumeration<Attribute> b = bInstances.enumerateAttributes();
 		
-		Attribute aAttribute,bAttribute;
+		Attribute aAttribute = null,bAttribute = null;
 		
 		while(a.hasMoreElements()){
 			if(!b.hasMoreElements()) return false;
@@ -24,6 +24,9 @@ public class DataValidatorImpl implements DataValidator {
 			if(!aAttribute.equals(bAttribute)) return false;
 			
 		}
+		
+		// last attribute should be class
+		if(aAttribute != null && !aAttribute.name().equalsIgnoreCase("class")) return false;
 		
 		if(b.hasMoreElements()) return false;
 		

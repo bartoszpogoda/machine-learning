@@ -1,0 +1,9 @@
+@relation B
+@attribute X numeric
+@attribute Y numeric
+@attribute Z numeric
+@data
+0,0,0
+1,1,1
+2,3,4
+4,5,-2
