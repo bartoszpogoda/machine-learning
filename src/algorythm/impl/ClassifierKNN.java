@@ -9,11 +9,12 @@ import java.util.Map;
 import java.util.Random;
 
 import algorythm.Classifier;
-import exceptions.DataInvalidException;
 import exceptions.DataNotCompatibleException;
 import exceptions.DataNotLearnedException;
 import exceptions.DataValidatorNotSetException;
 import helper.DataValidator;
+import helper.MyFixedSizeMap;
+import helper.impl.MyFixedSizeMapImpl;
 import weka.core.Attribute;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -33,6 +34,11 @@ public class ClassifierKNN implements Classifier {
 	@Override
 	public void setDataValidator(DataValidator dataValidtor) {
 		this.dataValidator = dataValidtor;
+	}
+	
+	/* Accessors */
+	public Instances getLearnedData(){
+		return learnedData;
 	}
 	
 	/* Algorithms */
@@ -185,26 +191,28 @@ public class ClassifierKNN implements Classifier {
 	 */
 	public Map<Instance, Double> findClosestNeighbors(Instance itemToPredict) throws DataNotLearnedException {
 		
-		Map<Instance, Double> closestNeighbors = new HashMap<Instance, Double>();
-		
 		if(learnedData == null) throw new DataNotLearnedException();
 		
 		@SuppressWarnings("unchecked")
 		Enumeration<Instance> enumerateLearnedData = learnedData.enumerateInstances();
 		
+		MyFixedSizeMap<Instance> myFixedSizeMap = new MyFixedSizeMapImpl<Instance>(k);
+		
 		while(enumerateLearnedData.hasMoreElements()){
 			
 			Instance itemLearned = enumerateLearnedData.nextElement();
 			
-			// TODO comparison
+			double distance = calculateDistance(itemToPredict, itemLearned);
+			
+			myFixedSizeMap.addElement(itemLearned, distance);
 			
 		}
 		
-		return closestNeighbors;
+		return myFixedSizeMap.map();
 	}
 	
 	// assumes that both instances have same attributes
-	public double calculateDistance(Instance itemA, Instance itemB) throws DataInvalidException{
+	public double calculateDistance(Instance itemA, Instance itemB){
 		double beforeSquare = 0.0;
 		
 		Enumeration<Attribute> enumerateAttributes = itemA.enumerateAttributes();
@@ -220,8 +228,7 @@ public class ClassifierKNN implements Classifier {
  			
 		}
 		
-		
-		throw new DataInvalidException();
+		return -1;
 	}
 
 	

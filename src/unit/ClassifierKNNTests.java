@@ -13,10 +13,10 @@ import java.util.Map;
 import org.junit.Test;
 
 import algorythm.impl.ClassifierKNN;
-import exceptions.DataInvalidException;
 import weka.core.Attribute;
 import weka.core.Instance;
 import weka.core.Instances;
+import weka.filters.unsupervised.attribute.ClassAssigner;
 
 
 public class ClassifierKNNTests {
@@ -148,7 +148,7 @@ public class ClassifierKNNTests {
 		}
 	}
 	
-	// meaning that Attributes with same names but from different files are accepted as equal.
+	// meaning that Attributes with same names but from different instances are accepted as equal.
 	@Test
 	public void calculateDistance3DTest2() {
 		try {
@@ -159,12 +159,37 @@ public class ClassifierKNNTests {
 			BufferedReader bufferedReader2 = new BufferedReader(new FileReader("testdata/my3Dtest.arff"));
 			Instances instances2 = new Instances(bufferedReader2);
 			
-			double calculatedDistance = classifier.calculateDistance(instances.get(0), instances2.get(1));
+			double calculatedDistance = classifier.calculateDistance(instances.get(2), instances2.get(3));
 			
-			assertEquals(Math.sqrt(3), calculatedDistance, 0.001);
+			assertEquals(Math.sqrt(44), calculatedDistance, 0.001);
 			
 	
 			
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+	
+	@Test
+	public void findClosestNeighborsTest1() {
+		try {
+			ClassifierKNN classifier = new ClassifierKNN(3);
+			
+			BufferedReader bufferedReader = new BufferedReader(new FileReader("testdata/my2Dtest.arff"));
+			Instances instances = new Instances(bufferedReader);
+			
+			Instance fakeInstanceToPredict = new Instances(instances).firstInstance();
+			fakeInstanceToPredict.setValue(0, -1);
+			fakeInstanceToPredict.setValue(1, 0);
+			
+			classifier.learn(instances);
+			Map<Instance, Double> closestNeighbors = classifier.findClosestNeighbors(fakeInstanceToPredict);
+			
+			assertTrue(closestNeighbors.containsKey(classifier.getLearnedData().get(0)));
+			assertTrue(closestNeighbors.containsKey(classifier.getLearnedData().get(2)));
+			assertTrue(closestNeighbors.containsKey(classifier.getLearnedData().get(3)));
+	
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
