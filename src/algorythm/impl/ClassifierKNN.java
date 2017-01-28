@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Random;
 
 import algorythm.Classifier;
+import exceptions.DataInvalidException;
 import exceptions.DataNotCompatibleException;
 import exceptions.DataNotLearnedException;
 import exceptions.DataValidatorNotSetException;
@@ -200,6 +201,27 @@ public class ClassifierKNN implements Classifier {
 		}
 		
 		return closestNeighbors;
+	}
+	
+	// assumes that both instances have same attributes
+	public double calculateDistance(Instance itemA, Instance itemB) throws DataInvalidException{
+		double beforeSquare = 0.0;
+		
+		Enumeration<Attribute> enumerateAttributes = itemA.enumerateAttributes();
+		
+		while(enumerateAttributes.hasMoreElements()){
+			Attribute attribute = enumerateAttributes.nextElement();
+			
+			if(attribute.name().equalsIgnoreCase("class")){
+				return Math.sqrt(beforeSquare);
+			}
+			
+			beforeSquare += Math.pow(itemA.value(attribute) - itemB.value(attribute), 2);
+ 			
+		}
+		
+		
+		throw new DataInvalidException();
 	}
 
 	

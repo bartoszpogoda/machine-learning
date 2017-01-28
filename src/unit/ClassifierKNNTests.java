@@ -13,6 +13,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import algorythm.impl.ClassifierKNN;
+import exceptions.DataInvalidException;
 import weka.core.Attribute;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -25,7 +26,7 @@ public class ClassifierKNNTests {
 		try {
 			ClassifierKNN classifier = new ClassifierKNN(5);
 			
-			BufferedReader bufferedReader = new BufferedReader(new FileReader("testdata/mylearningtest1.arff"));
+			BufferedReader bufferedReader = new BufferedReader(new FileReader("testdata/my2Dtest.arff"));
 			Instances instances = new Instances(bufferedReader);
 			
 			Map<Instance, Double> fakeKClosestWithDistances = new HashMap<Instance, Double>();
@@ -54,7 +55,7 @@ public class ClassifierKNNTests {
 		try {
 			ClassifierKNN classifier = new ClassifierKNN(5);
 			
-			BufferedReader bufferedReader = new BufferedReader(new FileReader("testdata/mylearningtest1.arff"));
+			BufferedReader bufferedReader = new BufferedReader(new FileReader("testdata/my2Dtest.arff"));
 			Instances instances = new Instances(bufferedReader);
 			
 			Map<Instance, Double> fakeKClosestWithDistances = new HashMap<Instance, Double>();
@@ -83,7 +84,7 @@ public class ClassifierKNNTests {
 		try {
 			ClassifierKNN classifier = new ClassifierKNN(5);
 			
-			BufferedReader bufferedReader = new BufferedReader(new FileReader("testdata/mylearningtest1.arff"));
+			BufferedReader bufferedReader = new BufferedReader(new FileReader("testdata/my2Dtest.arff"));
 			Instances instances = new Instances(bufferedReader);
 			
 			Map<Instance, Double> fakeKClosestWithDistances = new HashMap<Instance, Double>();
@@ -106,5 +107,67 @@ public class ClassifierKNNTests {
 			fail();
 		}
 	}
-
+	
+	@Test
+	public void calculateDistance2DTest1() {
+		try {
+			ClassifierKNN classifier = new ClassifierKNN(1);
+			
+			BufferedReader bufferedReader = new BufferedReader(new FileReader("testdata/my2Dtest.arff"));
+			Instances instances = new Instances(bufferedReader);
+			
+			double calculatedDistance = classifier.calculateDistance(instances.get(0), instances.get(1));
+			
+			assertEquals(2, calculatedDistance, 0.001);
+			
+	
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+	
+	@Test
+	public void calculateDistance3DTest1() {
+		try {
+			ClassifierKNN classifier = new ClassifierKNN(1);
+			
+			BufferedReader bufferedReader = new BufferedReader(new FileReader("testdata/my3Dtest.arff"));
+			Instances instances = new Instances(bufferedReader);
+			
+			double calculatedDistance = classifier.calculateDistance(instances.get(0), instances.get(1));
+			
+			assertEquals(Math.sqrt(3), calculatedDistance, 0.001);
+			
+	
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+	
+	// meaning that Attributes with same names but from different files are accepted as equal.
+	@Test
+	public void calculateDistance3DTest2() {
+		try {
+			ClassifierKNN classifier = new ClassifierKNN(1);
+			
+			BufferedReader bufferedReader = new BufferedReader(new FileReader("testdata/my3Dtest.arff"));
+			Instances instances = new Instances(bufferedReader);
+			BufferedReader bufferedReader2 = new BufferedReader(new FileReader("testdata/my3Dtest.arff"));
+			Instances instances2 = new Instances(bufferedReader2);
+			
+			double calculatedDistance = classifier.calculateDistance(instances.get(0), instances2.get(1));
+			
+			assertEquals(Math.sqrt(3), calculatedDistance, 0.001);
+			
+	
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
 }
