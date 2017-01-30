@@ -34,8 +34,8 @@ public class ClassifierKNN implements Classifier {
 	}
 	
 	@Override
-	public void setDataValidator(DataValidator dataValidtor) {
-		this.dataValidator = dataValidtor;
+	public void setDataValidator(DataValidator dataValidator) {
+		this.dataValidator = dataValidator;
 	}
 	
 	/* Accessors */
