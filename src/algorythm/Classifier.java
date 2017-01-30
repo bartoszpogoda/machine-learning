@@ -12,5 +12,5 @@ public interface Classifier {
 	void learn(Instances learnData);
 	Instances predict(Instances predictData) throws DataValidatorNotSetException, DataNotLearnedException, DataNotCompatibleException;
 	
-	void setDataValidator(DataValidator dataValidtor);
+	void setDataValidator(DataValidator dataValidator);
 }
