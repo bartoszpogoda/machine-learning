@@ -2,7 +2,7 @@ package components.impl;
 
 import java.util.Enumeration;
 
-import algorythm.Classifier;
+import algorithm.Classifier;
 import components.ClassifierScorer;
 import exceptions.DataNotCompatibleException;
 import exceptions.DataNotLearnedException;

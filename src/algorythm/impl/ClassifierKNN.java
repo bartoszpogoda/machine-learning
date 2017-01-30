@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import algorythm.Classifier;
+import algorithm.Classifier;
 import exceptions.DataNotCompatibleException;
 import exceptions.DataNotLearnedException;
 import exceptions.DataValidatorNotSetException;

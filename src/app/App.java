@@ -14,7 +14,7 @@ import java.util.Random;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import algorythm.Classifier;
+import algorithm.Classifier;
 import algorythm.impl.ClassifierKNN;
 import algorythm.impl.ClassifierNearestMean;
 import components.ClassifierScorer;

@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import algorythm.Classifier;
+import algorithm.Classifier;
 import exceptions.DataNotCompatibleException;
 import exceptions.DataNotLearnedException;
 import exceptions.DataValidatorNotSetException;

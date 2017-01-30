@@ -1,6 +1,6 @@
 package components;
 
-import algorythm.Classifier;
+import algorithm.Classifier;
 import exceptions.DataNotCompatibleException;
 import exceptions.DataNotLearnedException;
 import exceptions.DataValidatorNotSetException;
