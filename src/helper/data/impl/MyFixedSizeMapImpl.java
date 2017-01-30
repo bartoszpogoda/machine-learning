@@ -25,7 +25,8 @@ public class MyFixedSizeMapImpl<O> implements MyFixedSizeMap<O> {
 		keys = (O[]) new Object[size];
 		values = new double[size];
 		
-		this.biggestValue = Double.MAX_VALUE;
+		biggestValue = Double.MAX_VALUE;
+		
 	}
 	
 	@Override
@@ -41,14 +42,15 @@ public class MyFixedSizeMapImpl<O> implements MyFixedSizeMap<O> {
 			
 			currentSize++;
 			
+			recalculate();
+			
 			return;
 		}
-		
-		
+
 		if(value < biggestValue){
 			keys[biggestValueIndex] = key;
 			values[biggestValueIndex] = value;
-			
+
 			recalculate();
 		}
 		
