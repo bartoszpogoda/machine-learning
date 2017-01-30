@@ -13,7 +13,9 @@ import exceptions.DataNotCompatibleException;
 import exceptions.DataNotLearnedException;
 import exceptions.DataValidatorNotSetException;
 import helper.DataValidator;
+import helper.DistanceCalculator;
 import helper.MyFixedSizeMap;
+import helper.impl.EuklidesDistanceCalculator;
 import helper.impl.MyFixedSizeMapImpl;
 import weka.core.Attribute;
 import weka.core.Instance;
@@ -142,23 +144,15 @@ public class ClassifierKNN implements Classifier {
 					
 					String currentInstanceClass = instance.stringValue(attribute);
 					
-					boolean foundMatch = false;
-					
 					double relativeScore = biggestDistance - closestNeighbors.get(instance).doubleValue();
 					
-					for(String classes : classScores.keySet()){
-						if(classes.equalsIgnoreCase(currentInstanceClass)){
-							foundMatch = true;
-							
-							classScores.put(classes, classScores.get(classes) + relativeScore);
-							
-							break;
-						}
-					}
+					if(classScores.containsKey(currentInstanceClass)){
+						classScores.put(currentInstanceClass, classScores.get(currentInstanceClass) + relativeScore);
 					
-					if(!foundMatch){
+					} else{
 						classScores.put(currentInstanceClass, relativeScore);
 					}
+					
 				}
 			}
 		}
@@ -213,7 +207,8 @@ public class ClassifierKNN implements Classifier {
 	
 	// assumes that both instances have same attributes
 	public double calculateDistance(Instance itemA, Instance itemB){
-		double beforeSquare = 0.0;
+		// TODO could be class property - set from outside
+		DistanceCalculator distanceCalculator = new EuklidesDistanceCalculator(); 
 		
 		Enumeration<Attribute> enumerateAttributes = itemA.enumerateAttributes();
 		
@@ -221,10 +216,10 @@ public class ClassifierKNN implements Classifier {
 			Attribute attribute = enumerateAttributes.nextElement();
 			
 			if(attribute.name().equalsIgnoreCase("class")){
-				return Math.sqrt(beforeSquare);
+				return distanceCalculator.calculate();
 			}
 			
-			beforeSquare += Math.pow(itemA.value(attribute) - itemB.value(attribute), 2);
+			distanceCalculator.add(itemA.value(attribute), itemB.value(attribute));
  			
 		}
 		
