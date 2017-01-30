@@ -226,6 +226,10 @@ public class ClassifierKNN implements Classifier {
 		return -1;
 	}
 
+	@Override
+	public String toString() {
+		return "KNN (" + k + ") Classifier";
+	}
 	
 
 }

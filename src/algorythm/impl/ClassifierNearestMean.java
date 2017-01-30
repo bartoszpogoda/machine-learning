@@ -187,4 +187,9 @@ public class ClassifierNearestMean implements Classifier {
 		
 	}
 	
+	@Override
+	public String toString() {
+		return "Nearest Mean Classifier";
+	}
+	
 }
