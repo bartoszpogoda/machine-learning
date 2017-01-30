@@ -8,7 +8,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import algorythm.impl.ClassifierKNN;
+import algorithm.impl.ClassifierKNN;
 import helper.data.DataValidator;
 import helper.data.impl.DataValidatorImpl;
 import weka.core.Instances;

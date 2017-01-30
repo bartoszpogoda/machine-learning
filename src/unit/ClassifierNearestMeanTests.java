@@ -11,7 +11,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import algorythm.impl.ClassifierNearestMean;
+import algorithm.impl.ClassifierNearestMean;
 import weka.core.Instances;
 
 public class ClassifierNearestMeanTests {

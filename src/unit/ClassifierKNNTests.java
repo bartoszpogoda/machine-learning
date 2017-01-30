@@ -12,7 +12,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import algorythm.impl.ClassifierKNN;
+import algorithm.impl.ClassifierKNN;
 import weka.core.Attribute;
 import weka.core.Instance;
 import weka.core.Instances;

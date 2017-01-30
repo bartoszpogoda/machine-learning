@@ -15,8 +15,8 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import algorithm.Classifier;
-import algorythm.impl.ClassifierKNN;
-import algorythm.impl.ClassifierNearestMean;
+import algorithm.impl.ClassifierKNN;
+import algorithm.impl.ClassifierNearestMean;
 import components.ClassifierScorer;
 import components.impl.ClassifierScorerImpl;
 import exceptions.DataNotCompatibleException;
