@@ -1,6 +1,6 @@
-package helper.impl;
+package helper.calculator.impl;
 
-import helper.DistanceCalculator;
+import helper.calculator.DistanceCalculator;
 
 public class  EuklidesDistanceCalculator implements DistanceCalculator {
 

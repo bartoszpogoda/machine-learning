@@ -1,8 +1,8 @@
-package helper.impl;
+package helper.data.impl;
 
 import java.util.Enumeration;
 
-import helper.DataValidator;
+import helper.data.DataValidator;
 import weka.core.Attribute;
 import weka.core.Instances;
 

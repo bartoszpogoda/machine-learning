@@ -1,11 +1,11 @@
-package helper.impl;
+package helper.data.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import helper.MyFixedSizeMap;
+import helper.data.MyFixedSizeMap;
 
 public class MyFixedSizeMapImpl<O> implements MyFixedSizeMap<O> {
 	

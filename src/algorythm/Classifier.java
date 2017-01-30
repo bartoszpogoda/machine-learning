@@ -5,7 +5,7 @@ import java.util.List;
 import exceptions.DataNotCompatibleException;
 import exceptions.DataNotLearnedException;
 import exceptions.DataValidatorNotSetException;
-import helper.DataValidator;
+import helper.data.DataValidator;
 import weka.core.Instances;
 
 public interface Classifier {

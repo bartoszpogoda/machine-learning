@@ -1,6 +1,6 @@
-package helper.impl;
+package helper.calculator.impl;
 
-import helper.MeanCalculator;
+import helper.calculator.MeanCalculator;
 
 public class MeanCalaculatorImpl implements MeanCalculator {
 

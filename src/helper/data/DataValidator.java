@@ -1,4 +1,4 @@
-package helper;
+package helper.data;
 
 import weka.core.Instances;
 

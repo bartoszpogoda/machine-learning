@@ -1,4 +1,4 @@
-package helper;
+package helper.calculator;
 
 public interface MeanCalculator {
 	void add(double a);

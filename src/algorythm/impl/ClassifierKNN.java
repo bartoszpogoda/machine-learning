@@ -12,11 +12,11 @@ import algorythm.Classifier;
 import exceptions.DataNotCompatibleException;
 import exceptions.DataNotLearnedException;
 import exceptions.DataValidatorNotSetException;
-import helper.DataValidator;
-import helper.DistanceCalculator;
-import helper.MyFixedSizeMap;
-import helper.impl.EuklidesDistanceCalculator;
-import helper.impl.MyFixedSizeMapImpl;
+import helper.calculator.DistanceCalculator;
+import helper.calculator.impl.EuklidesDistanceCalculator;
+import helper.data.DataValidator;
+import helper.data.MyFixedSizeMap;
+import helper.data.impl.MyFixedSizeMapImpl;
 import weka.core.Attribute;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -207,7 +207,7 @@ public class ClassifierKNN implements Classifier {
 	
 	// assumes that both instances have same attributes
 	public double calculateDistance(Instance itemA, Instance itemB){
-		// TODO could be class property - set from outside
+		// TODO could be class property - set from outside 
 		DistanceCalculator distanceCalculator = new EuklidesDistanceCalculator(); 
 		
 		Enumeration<Attribute> enumerateAttributes = itemA.enumerateAttributes();
