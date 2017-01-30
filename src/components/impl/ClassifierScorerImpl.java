@@ -45,12 +45,11 @@ public class ClassifierScorerImpl implements ClassifierScorer {
 	@Override
 	public double score(boolean crossValidation) throws DependenciesNotSetException, DataValidatorNotSetException, DataNotLearnedException, DataNotCompatibleException {
 		
-		int allPredictions = 0;
-		int correctPredictions = 0;
-		
 		if(crossValidation){
 			
 			if(classifier == null || crossValidationData == null || crossValidationFolds == 0) throw new DependenciesNotSetException();
+			
+			double accuracySum = 0;
 			
 			for(int i = 0 ; i < crossValidationFolds ; i++){
 				Instances cvLearnData = crossValidationData.trainCV(crossValidationFolds, i);
@@ -59,37 +58,49 @@ public class ClassifierScorerImpl implements ClassifierScorer {
 				classifier.learn(cvLearnData);
 				Instances predictedData = classifier.predict(cvTestData);
 				
-				// accuracy tests
-				
-				Enumeration<Instance> enumerateReal = cvTestData.enumerateInstances();
-				Enumeration<Instance> enumeratePredicted = predictedData.enumerateInstances();
-				
-				while(enumerateReal.hasMoreElements() && enumeratePredicted.hasMoreElements()){
-					Instance real = enumerateReal.nextElement();
-					Instance predicted = enumeratePredicted.nextElement();
-					
-					allPredictions++;
-					
-					String realClass = real.stringValue(real.dataset().attribute("class"));	
-					String predictedClass = predicted.stringValue(predicted.dataset().attribute("class"));
-					
-					if(predictedClass.equalsIgnoreCase(realClass))
-							correctPredictions++;
-					
-				}
-				
+				accuracySum += calculateAccuracy(cvTestData, predictedData);
 				
 			}
-			
+
+			return accuracySum/crossValidationFolds;
 			
 		} else{
 			
 			if(classifier == null || learnData == null || testData == null) throw new DependenciesNotSetException();
 			
+			classifier.learn(learnData);
+			
+			Instances predictedData = classifier.predict(testData);
+			
+			return calculateAccuracy(testData, predictedData);
+			
+		}
+	}
+	
+	private double calculateAccuracy(Instances cvTestData, Instances predictedData){
+
+		int allPredictions = 0;
+		int correctPredictions = 0;
+		
+		Enumeration<Instance> enumerateReal = cvTestData.enumerateInstances();
+		Enumeration<Instance> enumeratePredicted = predictedData.enumerateInstances();
+		
+		while(enumerateReal.hasMoreElements() && enumeratePredicted.hasMoreElements()){
+			Instance real = enumerateReal.nextElement();
+			Instance predicted = enumeratePredicted.nextElement();
+			
+			allPredictions++;
+			
+			String realClass = real.stringValue(real.dataset().attribute("class"));	
+			String predictedClass = predicted.stringValue(predicted.dataset().attribute("class"));
+			
+			if(predictedClass.equalsIgnoreCase(realClass))
+					correctPredictions++;
 			
 		}
 		
 		return ((double)correctPredictions/(double)allPredictions);
+		
 	}
 
 }
