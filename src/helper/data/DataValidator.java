@@ -8,5 +8,5 @@ public interface DataValidator {
 	 */
 	boolean checkDataCompability(Instances a, Instances b);
 	
-	boolean checkNonAttributeNumberCompability(Instances a, int number);
+	boolean checkAttributeNumberCompability(Instances a, int number);
 }

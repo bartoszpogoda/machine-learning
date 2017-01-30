@@ -34,7 +34,7 @@ public class DataValidatorImpl implements DataValidator {
 	}
 
 	@Override
-	public boolean checkNonAttributeNumberCompability(Instances a, int number) {
+	public boolean checkAttributeNumberCompability(Instances a, int number) {
 		return (a.numAttributes() - 1 == number);
 	}
 
