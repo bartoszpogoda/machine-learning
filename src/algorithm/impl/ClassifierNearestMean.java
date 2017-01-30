@@ -1,14 +1,11 @@
 package algorithm.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 import algorithm.Classifier;
 import exceptions.DataNotCompatibleException;
@@ -19,14 +16,12 @@ import helper.calculator.MeanCalculator;
 import helper.calculator.impl.EuklidesDistanceCalculator;
 import helper.calculator.impl.MeanCalaculatorImpl;
 import helper.data.DataValidator;
-import weka.clusterers.NumberOfClustersRequestable;
-import weka.core.Attribute;
 import weka.core.Instance;
 import weka.core.Instances;
 
 public class ClassifierNearestMean implements Classifier {
 
-	private Map<String, List<Double>> learnedMeans; // Attribute 0,1,..,n-1
+	private Map<String, List<Double>> learnedMeans; 
 	
 	private int numberOfAttributes;
 	
@@ -34,13 +29,13 @@ public class ClassifierNearestMean implements Classifier {
 	
 	/* Class construction */
 	
-	
 	@Override
 	public void setDataValidator(DataValidator dataValidator) {
 		this.dataValidator = dataValidator;
 	}
 	
 	/* Accessors */
+	
 	public Map<String, List<Double>> getLearnedMeans(){
 		return learnedMeans;
 	}
@@ -128,13 +123,9 @@ public class ClassifierNearestMean implements Classifier {
 		String predictedClass = null;
 		
 		Map<String, Double> distancesFromMeans = calculateDistanceFromClassesMeans(itemToPredict);
-		
-		// determine the best fit class
-		
+	
 		predictedClass = findBestClass(distancesFromMeans);
 
-		
-		//TODO handle equality
 		return predictedClass;
 	}
 	
@@ -149,8 +140,8 @@ public class ClassifierNearestMean implements Classifier {
 				lowestDistance = distancesFromMeans.get(className);
 				bestClassName = className;
 			}
-			// in equality case (not very likely for double values but why not) - go random TODO: delta?
-			else if(distancesFromMeans.get(className) == lowestDistance){ 
+			// in equality case (not very likely for double values but why not) - go random
+			else if(distancesFromMeans.get(className) == lowestDistance){
 				if((new Random()).nextBoolean()){
 					lowestDistance = distancesFromMeans.get(className);
 					bestClassName = className;
@@ -169,7 +160,7 @@ public class ClassifierNearestMean implements Classifier {
 		Map<String, Double> distancesFromMeans = new HashMap<>();
 		
 		for(String className : learnedMeans.keySet()){
-			// could be one instance for every iteration since it resets after calculating but it look cleaner that way
+			// could be one instance for every iteration since it resets after calculating but it looks cleaner that way
 			DistanceCalculator distanceCalculator = new EuklidesDistanceCalculator();
 			
 			List<Double> meanValues = learnedMeans.get(className);

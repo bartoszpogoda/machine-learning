@@ -1,7 +1,5 @@
 package algorithm;
 
-import java.util.List;
-
 import exceptions.DataNotCompatibleException;
 import exceptions.DataNotLearnedException;
 import exceptions.DataValidatorNotSetException;

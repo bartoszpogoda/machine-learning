@@ -4,7 +4,7 @@ import weka.core.Instances;
 
 public interface DataValidator {
 	/***
-	 * checks if given Instances have same attributes
+	 * checks if given Instances have same number of
 	 */
 	boolean checkDataCompability(Instances a, Instances b);
 	

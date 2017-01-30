@@ -1,10 +1,8 @@
 package algorithm.impl;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -76,6 +74,8 @@ public class ClassifierKNN implements Classifier {
 		
 		return dataToPredict;
 	}
+
+	/* Helper algorithms */
 	
 	public String predict(Instance itemToPredict) throws DataValidatorNotSetException, DataNotLearnedException, DataNotCompatibleException {
 
@@ -118,8 +118,6 @@ public class ClassifierKNN implements Classifier {
 		return bestClassName;
 	}
 
-	/* Helper algorithms */
-	
 	/***
 	 * 
 	 * @param closestNeighbors Map that associates closest neighbors with their distances

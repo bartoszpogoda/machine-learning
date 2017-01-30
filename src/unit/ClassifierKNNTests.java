@@ -1,22 +1,20 @@
 package unit;
 
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
 
 import algorithm.impl.ClassifierKNN;
-import weka.core.Attribute;
 import weka.core.Instance;
 import weka.core.Instances;
-import weka.filters.unsupervised.attribute.ClassAssigner;
 
 
 public class ClassifierKNNTests {

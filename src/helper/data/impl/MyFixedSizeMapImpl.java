@@ -1,8 +1,6 @@
 package helper.data.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import helper.data.MyFixedSizeMap;
@@ -18,7 +16,6 @@ public class MyFixedSizeMapImpl<O> implements MyFixedSizeMap<O> {
 	private O[] keys;
 	private double[] values;
 	
-	@SuppressWarnings("unchecked")
 	public MyFixedSizeMapImpl(int size) {
 		this.size = size;
 		currentSize = 0;

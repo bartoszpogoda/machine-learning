@@ -1,35 +1,19 @@
 package app;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.Enumeration;
-import java.util.List;
 import java.util.Random;
-
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
 
 import algorithm.Classifier;
 import algorithm.impl.ClassifierKNN;
 import algorithm.impl.ClassifierNearestMean;
 import components.ClassifierScorer;
 import components.impl.ClassifierScorerImpl;
-import exceptions.DataNotCompatibleException;
-import exceptions.DataNotLearnedException;
-import exceptions.DataValidatorNotSetException;
-import exceptions.DependenciesNotSetException;
 import helper.data.DataValidator;
 import helper.data.impl.DataValidatorImpl;
-import weka.core.Attribute;
-import weka.core.Instance;
 import weka.core.Instances;
-import weka.core.converters.ArffLoader;
-import weka.core.converters.ArffLoader.ArffReader;
 
 public class App {
 
@@ -85,8 +69,5 @@ public class App {
 				System.out.println("Testing algorithm on " + fileName + " generated an exception. Message: " + e.getMessage());
 			}
 		}
-		
-		
 	}
-
 }
